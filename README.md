@@ -6,6 +6,10 @@ DataTablesForm is a simple Django app for connecting the datatables 1.10 js plug
 Quick start
 -----------
 
+Before everything else you will have to clone this repository and install the app in your python environment::
+
+        pip install dist/django-datatablesform-0.1.tar.gz
+
 1. Add "datatablesform" to your INSTALLED_APPS setting like this::
 
         INSTALLED_APPS = [
