@@ -41,7 +41,7 @@ Before everything else you will have to clone this repository and install the ap
 
 
 4. Be aware of having the needed datatables static files in your "my_form_template",
-   also you'll need to create a table element and include the script_table:
+   also you'll need to create a table element and include the script_table::
     
         <link href="your_static_dir" rel="stylesheet"/>
         ....
