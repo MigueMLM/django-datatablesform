@@ -1,0 +1,132 @@
+<script id="table_{{table}}">
+function create_table_{{table}}(){
+	var {{table}}_data = {{data|safe}};
+
+    var table_{{table}} = $("#table-{{table}}").DataTable({
+		data: {{table}}_data,
+		language: {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Mostrar _MENU_ registros",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar",
+            "sUrl":            "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":     "Último",
+                "sNext":     "Siguiente",
+                "sPrevious": "Anterior"
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        },
+
+        columns : [
+            {
+                data: null,
+                defaultContent: '',
+                className: 'select-checkbox',
+                orderable: false
+            },
+            {% for col in columns %}
+                {% if col.name != 'id' %}
+                {
+                    title: "{{col.label}}",
+                    {% if forloop.counter > 8 %}
+                    visible: false,
+                    {% endif %}
+                    {% if col.type == 'select' or col.type == 'radio' %}
+                        {% if col.multiple %}
+                        data: "{{col.name}}",
+                        render: function (data, type, row, meta) {
+                            var opts = {{col.options|safe}};
+                            var disp_data = "";
+                            var f = 0;
+                            $.each(opts, function(i, o){
+                                for (var d in data){
+                                    if(data[d] == o["value"]){
+                                        if (f==0){
+                                            disp_data += o["label"];
+                                        }else{
+                                            disp_data += ", " + o["label"];
+                                        }
+                                    f++;
+                                    }
+                                }
+                            });
+                            return disp_data.substring(0,20)+"...";
+                        },
+                        {% else %}
+                        data: "{{col.name}}",
+                        render: function (data, type, row, meta) {
+                            var opts = {{col.options|safe}};
+                            $.each(opts, function(i, o){
+                                if(data === o["value"]){
+                                    data = o["label"];
+                                }
+                            });
+                            return data;
+                        },
+                        {% endif %}
+                    {% elif col.type == 'checkbox' %}
+                        data: "{{col.name}}",
+                        render: function ( data, type, row ) {
+                            if ( type === 'display' ) {
+                                return '<input type="checkbox" class="boolean-{{col.name}}" readonly>';
+                            }
+                            return data;
+                        },
+                        className: "dt-body-center"
+                    {% elif col.type == 'image' %}
+                        data: "{{col.name}}",
+                        render: function ( data, type, row ) {
+                            if ( type === 'display' ) {
+                                if (data != ""){
+                                    return  "<img style='height:50px' class='img-{{col.name}}' src='" + data + "'/>";
+                                }
+                            }
+                            return data;
+                        },
+                        className: "dt-no-editable"
+                    {% else %}
+                    data: "{{col.name}}",
+                    {% endif %}
+                },
+                {% endif %}
+            {% endfor %}
+        ],
+
+        rowCallback: function ( row, data ) {
+        {% for col in columns %}
+            {% if col.type == 'checkbox' %}
+                $('input.boolean-{{col.name}}', row).prop( 'checked', data['{{col.name}}'] == 1 );
+            {% endif %}
+        {% endfor %}
+        },
+        dom       : "lBfrtip",
+        select: {
+            style:    'os',
+            selector: 'td:first-child'
+        },
+        image:{
+            style: 'os',
+            selector: 'td:not-editable'
+        },
+        rowId: 'id',
+        autoWidth: false,
+
+        responsive: !0,
+    	stateSave: true,
+	});
+}
+$(document).ready(create_table_{{table}}());
+
+</script>
