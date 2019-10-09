@@ -1,5 +1,5 @@
 DataTablesForm
-=====
+==============
 
 DataTablesForm is a simple Django app for connecting the datatables 1.10 js plugin with a standard django ModelForm.
 

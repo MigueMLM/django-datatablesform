@@ -15,7 +15,8 @@ setup(
     license='BSD License',  
     description='A simple Django app for connecting the datatables 1.10 js plugin with a standard django ModelForm.',
     long_description=README,
-    author='@elmaik',
+    long_description_content_type='text/x-rst',
+    author='MigueMLM',
     author_email='miguellm@lecrintech.com',
     classifiers=[
         'Environment :: Web Environment',

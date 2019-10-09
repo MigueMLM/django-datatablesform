@@ -10,6 +10,10 @@ Before everything else you will have to clone this repository and install the ap
 
         pip install dist/django-datatablesform-0.1.tar.gz
 
+or best, install it directly from pip::
+
+        pip install django-datatablesform
+
 1. Add "datatablesform" to your INSTALLED_APPS setting like this::
 
         INSTALLED_APPS = [
